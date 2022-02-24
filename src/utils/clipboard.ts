@@ -1,4 +1,5 @@
-const clipboard = (text: string) => {
+const clipboard = (text: string | null) => {
+  if (!text) return;
   if (!document.queryCommandSupported("copy")) {
     return alert("복사하기가 지원되지 않는 브라우저입니다.");
   }
