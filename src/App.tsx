@@ -6,15 +6,23 @@ import DetailPage from "pages/DetailPage";
 import LinkPage from "pages/LinkPage";
 import GlobalStyle from "styles/GlobalStyle";
 import axios from "axios";
+import { getSession, inSession, setSession } from "utils";
+import { ApiDataType } from "types";
 
 function App() {
-  const [data, setData] = useState();
+  const [data, setData] = useState<ApiDataType>();
+
   useEffect(() => {
-    (async () => {
-      const { data } = await axios.get("homeworks/links");
-      setData(data);
-    })();
+    if (inSession("data")) setData(getSession("data"));
+    else {
+      (async () => {
+        const { data } = await axios.get("homeworks/links");
+        setData(data);
+        setSession("data", data);
+      })();
+    }
   }, []);
+
   console.log(data);
   return (
     <BrowserRouter>
