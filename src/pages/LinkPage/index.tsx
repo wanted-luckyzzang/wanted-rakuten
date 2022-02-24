@@ -4,7 +4,7 @@ import styled from "styled-components";
 import colors from "styles/colors";
 import { useNavigate } from "react-router";
 import { ApiDataType } from "types";
-import { getLatestCreatedAt, roundToTwo } from "utils";
+import { clipboard, getLatestCreatedAt, roundToTwo } from "utils";
 import TimeCell from "./TimeCell";
 
 interface LinkPageParams {
@@ -45,14 +45,18 @@ const LinkPage = (props: LinkPageParams): JSX.Element => {
                     <LinkTitle onClick={() => navigate(data.key)}>
                       {data.sent?.subject || "무제"}
                     </LinkTitle>
-                    <LinkUrl>{`localhost/${data.key}`}</LinkUrl>
+                    <LinkUrl
+                      onClick={() => {
+                        clipboard(`localhost:3000/${data.key}`);
+                      }}
+                    >{`localhost:3000/${data.key}`}</LinkUrl>
                   </LinkTexts>
                 </LinkInfo>
                 <span />
               </TableCell>
               <TableCell>
                 <span>파일개수</span>
-                <span>{data.count}</span>
+                <span>{data.count.toLocaleString()}</span>
               </TableCell>
               <TableCell>
                 <span>파일사이즈</span>
