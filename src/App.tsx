@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Route, Routes } from "react-router";
 import { BrowserRouter } from "react-router-dom";
+import axios from "axios";
+import { ApiDataType } from "types";
+import { getSession, inSession, setSession } from "utils";
+import { NotData } from 'pages/ErrorPage';
 import Container from "components/Container";
 import DetailPage from "pages/DetailPage";
 import LinkPage from "pages/LinkPage";
 import GlobalStyle from "styles/GlobalStyle";
-import axios from "axios";
-import { getSession, inSession, setSession } from "utils";
-import { ApiDataType } from "types";
-import NotFound from "pages/NotFound";
+
+
 
 function App() {
   const [data, setData] = useState<ApiDataType>();
@@ -51,9 +53,7 @@ function App() {
             </Routes>
           </Container>
         </BrowserRouter>
-      ) : (
-        <NotFound />
-      )}
+      ) : (<NotData/>)}
     </>
   );
 }

@@ -1,7 +1,4 @@
 import React from "react";
-import Avatar from "components/Avatar";
-import styled from "styled-components";
-import colors from "styles/colors";
 import { useNavigate } from "react-router";
 import { ApiDataType } from "types";
 import {
@@ -11,6 +8,10 @@ import {
   milliToTimeForm,
   roundToTwo,
 } from "utils";
+import Avatar from "components/Avatar";
+import styled from "styled-components";
+import colors from "styles/colors";
+
 
 interface LinkPageParams {
   data: ApiDataType | undefined;
