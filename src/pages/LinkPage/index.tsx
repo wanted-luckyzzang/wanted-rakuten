@@ -4,17 +4,23 @@ import styled from "styled-components";
 import colors from "styles/colors";
 import { useNavigate } from "react-router";
 import { ApiDataType } from "types";
-import { clipboard, getLatestCreatedAt, roundToTwo } from "utils";
-import TimeCell from "./TimeCell";
+import {
+  clipboard,
+  getLatestCreatedAt,
+  getRestMilliSeconds,
+  milliToTimeForm,
+  roundToTwo,
+} from "utils";
 
 interface LinkPageParams {
   data: ApiDataType | undefined;
   baseDate: number;
+  nowDate: number;
 }
 
 const LinkPage = (props: LinkPageParams): JSX.Element => {
   const navigate = useNavigate();
-  const createdAt = getLatestCreatedAt(props.data);
+  const latestCreatedAt = getLatestCreatedAt(props.data);
 
   return (
     <>
@@ -47,9 +53,27 @@ const LinkPage = (props: LinkPageParams): JSX.Element => {
                     </LinkTitle>
                     <LinkUrl
                       onClick={() => {
-                        clipboard(`localhost:3000/${data.key}`);
+                        clipboard(
+                          getRestMilliSeconds(
+                            latestCreatedAt,
+                            data.expires_at,
+                            props.baseDate,
+                            props.nowDate
+                          ) > 0
+                            ? `localhost:3000/${data.key}`
+                            : null
+                        );
                       }}
-                    >{`localhost:3000/${data.key}`}</LinkUrl>
+                    >
+                      {getRestMilliSeconds(
+                        latestCreatedAt,
+                        data.expires_at,
+                        props.baseDate,
+                        props.nowDate
+                      ) > 0
+                        ? `localhost:3000/${data.key}`
+                        : "만료됨"}
+                    </LinkUrl>
                   </LinkTexts>
                 </LinkInfo>
                 <span />
@@ -64,10 +88,14 @@ const LinkPage = (props: LinkPageParams): JSX.Element => {
               </TableCell>
               <TableCell>
                 <span>유효기간</span>
-                <TimeCell
-                  expiration={data.expires_at - createdAt}
-                  baseDate={props.baseDate}
-                />
+                <span>
+                  {milliToTimeForm(
+                    latestCreatedAt,
+                    data.expires_at,
+                    props.baseDate,
+                    props.nowDate
+                  )}
+                </span>
               </TableCell>
               <TableCell>
                 <span>받은사람</span>
