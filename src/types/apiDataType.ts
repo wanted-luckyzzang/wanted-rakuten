@@ -5,6 +5,11 @@ export interface FileDataType {
   size: number;
 }
 
+export interface SentType {
+  subject: string;
+  content: string;
+  emails: string[];
+}
 export type FilesType = FileDataType[];
 
 export interface DataType {
@@ -17,6 +22,7 @@ export interface DataType {
   summary: string;
   thumbnailUrl: string;
   files: FilesType;
+  sent?: SentType;
 }
 
 export type ApiDataType = DataType[];
