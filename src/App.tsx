@@ -12,18 +12,22 @@ import NotFound from 'pages/NotFound';
 
 function App() {
   const [data, setData] = useState<ApiDataType>();
-  const [nowDate, setNowDate] = useState<number>(0);
+  const [baseDate, setBaseDate] = useState<number>(0);
 
   useEffect(() => {
-    if (inSession("data")) setData(getSession("data"));
-    else {
+    if (inSession("data")) {
+      setData(getSession("data") as ApiDataType);
+      setBaseDate(getSession("baseDate") as number);
+    } else {
       (async () => {
         const { data } = await axios.get("homeworks/links");
-        setData(data);
+        const baseDate = new Date().getTime();
         setSession("data", data);
+        setData(data);
+        setSession("baseDate", baseDate);
+        setBaseDate(baseDate);
       })();
     }
-    setNowDate(new Date().getTime());
   }, []);
 
   return (
@@ -33,7 +37,7 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={<LinkPage data={data} nowDate={nowDate} />}
+            element={<LinkPage data={data} baseDate={baseDate} />}
           ></Route>
           <Route path="/:key" element={<DetailPage data={data} />}></Route>
         </Routes>

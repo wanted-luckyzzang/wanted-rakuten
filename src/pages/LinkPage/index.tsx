@@ -4,15 +4,17 @@ import styled from "styled-components";
 import colors from "styles/colors";
 import { useNavigate } from "react-router";
 import { ApiDataType } from "types";
-import { roundToTwo } from "utils";
+import { clipboard, getLatestCreatedAt, roundToTwo } from "utils";
+import TimeCell from "./TimeCell";
 
 interface LinkPageParams {
   data: ApiDataType | undefined;
-  nowDate: number;
+  baseDate: number;
 }
 
 const LinkPage = (props: LinkPageParams): JSX.Element => {
   const navigate = useNavigate();
+  const createdAt = getLatestCreatedAt(props.data);
 
   return (
     <>
@@ -40,17 +42,21 @@ const LinkPage = (props: LinkPageParams): JSX.Element => {
                     />
                   </LinkImage>
                   <LinkTexts>
-                    <LinkTitle onClick={() => navigate("/7LF$MDL")}>
+                    <LinkTitle onClick={() => navigate(data.key)}>
                       {data.sent?.subject || "무제"}
                     </LinkTitle>
-                    <LinkUrl>{`localhost/${data.key}`}</LinkUrl>
+                    <LinkUrl
+                      onClick={() => {
+                        clipboard(`localhost:3000/${data.key}`);
+                      }}
+                    >{`localhost:3000/${data.key}`}</LinkUrl>
                   </LinkTexts>
                 </LinkInfo>
                 <span />
               </TableCell>
               <TableCell>
                 <span>파일개수</span>
-                <span>{data.count}</span>
+                <span>{data.count.toLocaleString()}</span>
               </TableCell>
               <TableCell>
                 <span>파일사이즈</span>
@@ -58,7 +64,10 @@ const LinkPage = (props: LinkPageParams): JSX.Element => {
               </TableCell>
               <TableCell>
                 <span>유효기간</span>
-                <span>48시간 00분</span>
+                <TimeCell
+                  expiration={data.expires_at - createdAt}
+                  baseDate={props.baseDate}
+                />
               </TableCell>
               <TableCell>
                 <span>받은사람</span>

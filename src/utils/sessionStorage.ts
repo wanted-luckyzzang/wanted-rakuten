@@ -6,8 +6,8 @@ export const inSession = (key: string) => {
   return false;
 };
 
-export const setSession = (key: string, data: ApiDataType): void =>
+export const setSession = (key: string, data: ApiDataType | number): void =>
   sessionStorage.setItem(key, JSON.stringify(data));
 
-export const getSession = (data: string): ApiDataType =>
+export const getSession = (data: string): ApiDataType | number =>
   JSON.parse(sessionStorage.getItem(data) as string);
