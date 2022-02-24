@@ -24,7 +24,9 @@ function App() {
       setSession("baseDate", date);
       setBaseDate(date);
       (async () => {
-        const { data } = await axios.get("homeworks/links");
+        const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
+        const URL = `${PROXY}/homeworks/links`;
+        const { data } = await axios.get(URL);
         setSession("data", data);
         setData(data);
       })();
