@@ -3,8 +3,10 @@ import type { FC } from "react";
 import Avatar from "components/Avatar";
 import styled from "styled-components";
 import colors from "styles/colors";
+import { useNavigate } from "react-router";
 
 const LinkPage: FC = () => {
+  const navigate = useNavigate();
   return (
     <>
       <Title>마이 링크</Title>
@@ -30,7 +32,9 @@ const LinkPage: FC = () => {
                   />
                 </LinkImage>
                 <LinkTexts>
-                  <LinkTitle>로고파일</LinkTitle>
+                  <LinkTitle onClick={() => navigate("/7LF$MDL")}>
+                    로고파일
+                  </LinkTitle>
                   <LinkUrl>localhost/7LF4MDLY</LinkUrl>
                 </LinkTexts>
               </LinkInfo>
