@@ -4,8 +4,7 @@ import colors from "styles/colors";
 import Button from "components/Button";
 import { ApiDataType } from "types";
 import { useParams } from "react-router";
-import { getKeyFilterData } from "utils";
-
+import { getKeyFilterData, roundToTwo } from "utils";
 interface DetailPageParams {
   data: ApiDataType | undefined;
 }
@@ -22,7 +21,7 @@ const DetailPage = (props: DetailPageParams): JSX.Element => {
         <>
           <Header>
             <LinkInfo>
-              <Title>{getFilterData?.sent?.subject||"제목없음"}</Title>
+              <Title>{getFilterData?.sent?.subject||"무제"}</Title>
               <Url>localhost/{key}</Url>
             </LinkInfo>
             <DownloadButton>
@@ -40,7 +39,7 @@ const DetailPage = (props: DetailPageParams): JSX.Element => {
                 <Top>링크 생성일</Top>
                 <Bottom>{getFilterData.created_at}</Bottom>
                 <Top>메세지</Top>
-                <Bottom>{getFilterData?.sent?.content||"메세지 없음"}</Bottom>)
+                <Bottom>{getFilterData?.sent?.content||"메세지 없음"}</Bottom>
                 <Top>다운로드 횟수</Top>
                 <Bottom>{getFilterData.download_count}</Bottom>
               </Texts>
@@ -50,16 +49,16 @@ const DetailPage = (props: DetailPageParams): JSX.Element => {
             </Descrition>
             <ListSummary>
               <div>총 {getFilterData.count}개의 파일</div>
-              <div>10.86KB</div>
+              <div>{roundToTwo(getFilterData.size)}</div>
             </ListSummary>
             <FileList>
-              {getFilterData.files.map((file, idx)=> (
-                <FileListItem>
+              {getFilterData.files.map((file)=> (
+                <FileListItem key={file.key}>
                 <FileItemInfo>
                   <span />
                   <span>{file.name}</span>
                 </FileItemInfo>
-                <FileItemSize>10.86KB</FileItemSize>
+                <FileItemSize>{roundToTwo(file.size)}</FileItemSize>
               </FileListItem>
               ))}
             </FileList>
