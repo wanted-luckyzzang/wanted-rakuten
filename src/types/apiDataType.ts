@@ -14,7 +14,7 @@ export type FilesType = FileDataType[];
 
 export interface DataType {
   created_at: number;
-  key: string;
+  key: string | undefined;
   expires_at: number;
   download_count: number;
   count: number;

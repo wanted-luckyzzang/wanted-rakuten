@@ -12,9 +12,8 @@ interface DetailPageParams {
 const DetailPage = (props: DetailPageParams): JSX.Element => {
   const { data } = props;
   let { key } = useParams();
-  console.log(key);
-
   const getFilterData = getKeyFilterData(data, key);
+  
   return (
     <>
       {getFilterData && (
@@ -24,7 +23,7 @@ const DetailPage = (props: DetailPageParams): JSX.Element => {
               <Title>{getFilterData?.sent?.subject||"무제"}</Title>
               <Url>localhost/{key}</Url>
             </LinkInfo>
-            <DownloadButton>
+            <DownloadButton onClick={(()=>alert("다운로드 되었습니다."))}>
               <img
                 referrerPolicy="no-referrer"
                 src="/svgs/download.svg"
