@@ -11,8 +11,7 @@ export const getLastetCreatedAt = (data: ApiDataType): number => {
 };
 
 export const getKeyFilterData = (
-  apiData: ApiDataType,
-  key: string
-): DataType => {
-  return apiData.filter((data: DataType) => data.key === key)[0];
-};
+  apiData: ApiDataType | undefined,
+  key: string | undefined
+): DataType | undefined =>
+  apiData?.filter((data: DataType) => data.key === key)[0];
