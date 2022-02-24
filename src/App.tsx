@@ -34,7 +34,7 @@ function App() {
             path="/"
             element={<LinkPage data={data} nowDate={nowDate} />}
           ></Route>
-          <Route path="/:id" element={<DetailPage />}></Route>
+          <Route path="/:key" element={<DetailPage data={data} />}></Route>
         </Routes>
       </Container>
     </BrowserRouter>
