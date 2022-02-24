@@ -1,21 +1,19 @@
 import React from "react";
-import { useNavigate } from 'react-router';
 import styled from "styled-components";
 
-const NotFound = () => {
-  const navigate = useNavigate();
+const NotData = (): JSX.Element => {
   return(
     <>
       <Wrapper>
-        <Title>404</Title>
-        <Desc>Not Found</Desc>
-        <BackTo onClick={() => navigate(-1)}>메인으로</BackTo>
+        <Title>500</Title>
+        <Desc>Internet Server Error</Desc>
+        <BackTo>데이터 요청에 실패하였습니다.</BackTo>
       </Wrapper>
     </>
   )
 }
 
-export default NotFound;
+export default NotData;
 
 const Wrapper = styled.div`
   width: 500px;
@@ -36,12 +34,12 @@ const Desc = styled.p`
   color: black;
 `
 
-const BackTo = styled.button`
+const BackTo = styled.div`
   margin: auto;
   display: flex;
   margin-top: 40px;
   border-radius: 10px;
-  width: 200px;
+  width: max-content;
   height: 40px;
   font-size: 1.5rem;
   align-items: center;

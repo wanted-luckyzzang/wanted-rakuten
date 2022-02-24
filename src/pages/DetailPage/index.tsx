@@ -1,23 +1,28 @@
 import React from "react";
 import { useParams } from "react-router";
-import { getKeyFilterData, roundToTwo } from "utils";
 import { ApiDataType } from "types";
+import { getKeyFilterData, roundToTwo } from "utils";
+import { DateFormat } from 'utils/formatData';
+import { NotPage } from 'pages/ErrorPage';
 import styled from "styled-components";
 import colors from "styles/colors";
 import Button from "components/Button";
-import NotFound from 'pages/NotFound';
+
 interface DetailPageParams {
   data: ApiDataType | undefined;
 }
+
 
 const DetailPage = (props: DetailPageParams): JSX.Element => {
   const { data } = props;
   let { key } = useParams();
   const getFilterData = getKeyFilterData(data, key);
+  const getCreateDate = DateFormat(Number(getFilterData?.created_at))
+  
 
   return (
     <>
-    {key && getFilterData ? (
+    {getFilterData ? (
         <>
           <Header>
             <LinkInfo>
@@ -37,14 +42,14 @@ const DetailPage = (props: DetailPageParams): JSX.Element => {
             <Descrition>
               <Texts>
                 <Top>링크 생성일</Top>
-                <Bottom>{getFilterData.created_at}</Bottom>
+                <Bottom>{getCreateDate}</Bottom>
                 <Top>메세지</Top>
-                <Bottom>{getFilterData?.sent?.content||"메세지 없음"}</Bottom>
+                <Bottom>{getFilterData?.sent?.content||"내용 없음"}</Bottom>
                 <Top>다운로드 횟수</Top>
                 <Bottom>{getFilterData.download_count}</Bottom>
               </Texts>
               <LinkImage>
-                <Image />
+                <Image thumbnailUrl={getFilterData.thumbnailUrl}  />
               </LinkImage>
             </Descrition>
             <ListSummary>
@@ -54,7 +59,7 @@ const DetailPage = (props: DetailPageParams): JSX.Element => {
             <FileList>
               {getFilterData.files.map((file)=> (
                 <FileListItem key={file.key}>
-                <FileItemInfo>
+                <FileItemInfo thumbnailUrl ={file.thumbnailUrl }>
                   <span />
                   <span>{file.name}</span>
                 </FileItemInfo>
@@ -65,7 +70,7 @@ const DetailPage = (props: DetailPageParams): JSX.Element => {
           </Article>
         </>
       ) : (
-        <NotFound/>
+        <NotPage data={getFilterData}/>
       )}
     </>
   );
@@ -176,10 +181,12 @@ const LinkImage = styled.div`
   }
 `;
 
-const Image = styled.span`
+const Image = styled.span<{ thumbnailUrl: string }>`
   width: 120px;
   display: inline-block;
-  background-image: url(/svgs/default.svg);
+  background-image: ${({ thumbnailUrl }) => {
+    const imageType = thumbnailUrl.substring(thumbnailUrl.length-4, thumbnailUrl.length);
+    return imageType === '.png' || imageType === '.jpg' ? `url(${thumbnailUrl})` : `url(/svgs/default.svg)`}};
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
@@ -224,19 +231,20 @@ const FileListItem = styled.li`
   align-items: center;
 `;
 
-const FileItemInfo = styled.div`
+const FileItemInfo = styled.div<{ thumbnailUrl: string }>`
   flex-grow: 0;
   max-width: 50%;
   flex-basis: 50%;
   display: flex;
   align-items: center;
-
   span:first-child {
     width: 40px;
     height: 40px;
     margin-right: 12px;
     display: inline-block;
-    background-image: url(/svgs/default.svg);
+    background-image: ${({ thumbnailUrl }) => {
+      const imageType = thumbnailUrl.substring(thumbnailUrl.length-4, thumbnailUrl.length);
+      return imageType === '.png' || imageType === '.jpg' ? `url(${thumbnailUrl})` : `url(/svgs/default.svg)`}};
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;

@@ -41,3 +41,14 @@ export const milliToTimeForm = (
   if (hours >= 48) return days;
   return time;
 };
+
+export const DateFormat = (createDate: number) => {
+  const date = new Date(createDate*1000);
+  let week = new Array('일', '월', '화', '수', '목', '금', '토');
+  let year = date.getFullYear();
+  let month = date.getMonth()+1;
+  let day = date.getDate();
+  let dayName = week[date.getDay()];
+
+  return `${year}년 ${month}월 ${day}일 ${dayName}요일}`;
+}
