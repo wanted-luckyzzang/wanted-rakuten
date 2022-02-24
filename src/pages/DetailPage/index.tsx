@@ -3,14 +3,24 @@ import type { FC } from "react";
 import styled from "styled-components";
 import colors from "styles/colors";
 import Button from "components/Button";
+import { ApiDataType } from 'types';
+import { useParams } from 'react-router';
 
-const DetailPage: FC = () => {
+interface DetailPageParams {
+  data: ApiDataType | undefined
+}
+
+const DetailPage = (props:DetailPageParams): JSX.Element => {
+  const { data } = props;
+  let { key } = useParams();
+  console.log(key);
+
   return (
     <>
       <Header>
         <LinkInfo>
           <Title>로고파일</Title>
-          <Url>localhost/7LF4MDLY</Url>
+          <Url>localhost/{key}</Url>
         </LinkInfo>
         <DownloadButton>
           <img referrerPolicy="no-referrer" src="/svgs/download.svg" alt="" />
