@@ -32,7 +32,7 @@ const LinkPage: FC = () => {
                   />
                 </LinkImage>
                 <LinkTexts>
-                  <LinkTitle onClick={() => navigate("/7LF$MDL")}>
+                  <LinkTitle onClick={() => navigate("/7725NJHW")}>
                     로고파일
                   </LinkTitle>
                   <LinkUrl>localhost/7LF4MDLY</LinkUrl>

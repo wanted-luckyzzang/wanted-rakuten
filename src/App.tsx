@@ -15,14 +15,14 @@ function App() {
       setData(data);
     })();
   }, []);
-  console.log(data);
+
   return (
     <BrowserRouter>
       <GlobalStyle />
       <Container>
         <Routes>
           <Route path="/" element={<LinkPage />}></Route>
-          <Route path="/:id" element={<DetailPage />}></Route>
+          <Route path=":key" element={<DetailPage data={data} />}></Route>
         </Routes>
       </Container>
     </BrowserRouter>
