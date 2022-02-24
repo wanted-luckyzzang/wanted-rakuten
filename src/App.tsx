@@ -4,13 +4,11 @@ import { BrowserRouter } from "react-router-dom";
 import axios from "axios";
 import { ApiDataType } from "types";
 import { getSession, inSession, setSession } from "utils";
-import { NotData } from 'pages/ErrorPage';
+import { NotData } from "pages/ErrorPage";
 import Container from "components/Container";
 import DetailPage from "pages/DetailPage";
 import LinkPage from "pages/LinkPage";
 import GlobalStyle from "styles/GlobalStyle";
-
-
 
 function App() {
   const [data, setData] = useState<ApiDataType>();
@@ -49,11 +47,22 @@ function App() {
                   <LinkPage data={data} baseDate={baseDate} nowDate={nowDate} />
                 }
               ></Route>
-              <Route path="/:key" element={<DetailPage data={data} />}></Route>
+              <Route
+                path="/:key"
+                element={
+                  <DetailPage
+                    data={data}
+                    baseDate={baseDate}
+                    nowDate={nowDate}
+                  />
+                }
+              ></Route>
             </Routes>
           </Container>
         </BrowserRouter>
-      ) : (<NotData/>)}
+      ) : (
+        <NotData />
+      )}
     </>
   );
 }

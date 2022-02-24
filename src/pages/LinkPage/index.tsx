@@ -12,7 +12,6 @@ import Avatar from "components/Avatar";
 import styled from "styled-components";
 import colors from "styles/colors";
 
-
 interface LinkPageParams {
   data: ApiDataType | undefined;
   baseDate: number;
@@ -49,7 +48,16 @@ const LinkPage = (props: LinkPageParams): JSX.Element => {
                     />
                   </LinkImage>
                   <LinkTexts>
-                    <LinkTitle onClick={() => navigate(data.key)}>
+                    <LinkTitle
+                      onClick={() => {
+                        getRestMilliSeconds(
+                          latestCreatedAt,
+                          data.expires_at,
+                          props.baseDate,
+                          props.nowDate
+                        ) > 0 && navigate(data.key);
+                      }}
+                    >
                       {data.sent?.subject || "무제"}
                     </LinkTitle>
                     <LinkUrl
