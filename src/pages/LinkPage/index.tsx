@@ -1,10 +1,27 @@
 import React from "react";
-import type { FC } from "react";
+import { useNavigate } from "react-router";
+import { ApiDataType } from "types";
+import {
+  clipboard,
+  getLatestCreatedAt,
+  getRestMilliSeconds,
+  milliToTimeForm,
+  roundToTwo,
+} from "utils";
 import Avatar from "components/Avatar";
 import styled from "styled-components";
 import colors from "styles/colors";
 
-const LinkPage: FC = () => {
+interface LinkPageParams {
+  data: ApiDataType | undefined;
+  baseDate: number;
+  nowDate: number;
+}
+
+const LinkPage = (props: LinkPageParams): JSX.Element => {
+  const navigate = useNavigate();
+  const latestCreatedAt = getLatestCreatedAt(props.data);
+
   return (
     <>
       <Title>마이 링크</Title>
@@ -19,114 +36,86 @@ const LinkPage: FC = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          <TableRow>
-            <TableCell>
-              <LinkInfo>
-                <LinkImage>
-                  <img
-                    referrerPolicy="no-referrer"
-                    src="/svgs/default.svg"
-                    alt=""
-                  />
-                </LinkImage>
-                <LinkTexts>
-                  <LinkTitle>로고파일</LinkTitle>
-                  <LinkUrl>localhost/7LF4MDLY</LinkUrl>
-                </LinkTexts>
-              </LinkInfo>
-              <span />
-            </TableCell>
-            <TableCell>
-              <span>파일개수</span>
-              <span>1</span>
-            </TableCell>
-            <TableCell>
-              <span>파일사이즈</span>
-              <span>10.86KB</span>
-            </TableCell>
-            <TableCell>
-              <span>유효기간</span>
-              <span>48시간 00분</span>
-            </TableCell>
-            <TableCell>
-              <span>받은사람</span>
-              <LinkReceivers>
-                <Avatar text="recruit@estmob.com" />
-              </LinkReceivers>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>
-              <LinkInfo>
-                <LinkImage>
-                  <img
-                    referrerPolicy="no-referrer"
-                    src="/svgs/default.svg"
-                    alt=""
-                  />
-                </LinkImage>
-                <LinkTexts>
-                  <LinkTitle>로고파일</LinkTitle>
-                  <LinkUrl>localhost/7LF4MDLY</LinkUrl>
-                </LinkTexts>
-              </LinkInfo>
-              <span />
-            </TableCell>
-            <TableCell>
-              <span>파일개수</span>
-              <span>1</span>
-            </TableCell>
-            <TableCell>
-              <span>파일사이즈</span>
-              <span>10.86KB</span>
-            </TableCell>
-            <TableCell>
-              <span>유효기간</span>
-              <span>48시간 00분</span>
-            </TableCell>
-            <TableCell>
-              <span>받은사람</span>
-              <LinkReceivers>
-                <Avatar text="recruit@estmob.com" />
-              </LinkReceivers>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>
-              <LinkInfo>
-                <LinkImage>
-                  <img
-                    referrerPolicy="no-referrer"
-                    src="/svgs/default.svg"
-                    alt=""
-                  />
-                </LinkImage>
-                <LinkTexts>
-                  <LinkTitle>로고파일</LinkTitle>
-                  <LinkUrl>localhost/7LF4MDLY</LinkUrl>
-                </LinkTexts>
-              </LinkInfo>
-              <span />
-            </TableCell>
-            <TableCell>
-              <span>파일개수</span>
-              <span>1</span>
-            </TableCell>
-            <TableCell>
-              <span>파일사이즈</span>
-              <span>10.86KB</span>
-            </TableCell>
-            <TableCell>
-              <span>유효기간</span>
-              <span>48시간 00분</span>
-            </TableCell>
-            <TableCell>
-              <span>받은사람</span>
-              <LinkReceivers>
-                <Avatar text="recruit@estmob.com" />
-              </LinkReceivers>
-            </TableCell>
-          </TableRow>
+          {props.data?.map((data) => (
+            <TableRow key={data.created_at}>
+              <TableCell>
+                <LinkInfo>
+                  <LinkImage>
+                    <img
+                      referrerPolicy="no-referrer"
+                      src="/svgs/default.svg"
+                      alt=""
+                    />
+                  </LinkImage>
+                  <LinkTexts>
+                    <LinkTitle
+                      onClick={() => {
+                        getRestMilliSeconds(
+                          latestCreatedAt,
+                          data.expires_at,
+                          props.baseDate,
+                          props.nowDate
+                        ) > 0 && navigate(data.key);
+                      }}
+                    >
+                      {data.sent?.subject || "무제"}
+                    </LinkTitle>
+                    <LinkUrl
+                      onClick={() => {
+                        clipboard(
+                          getRestMilliSeconds(
+                            latestCreatedAt,
+                            data.expires_at,
+                            props.baseDate,
+                            props.nowDate
+                          ) > 0
+                            ? `localhost:3000/${data.key}`
+                            : null
+                        );
+                      }}
+                    >
+                      {getRestMilliSeconds(
+                        latestCreatedAt,
+                        data.expires_at,
+                        props.baseDate,
+                        props.nowDate
+                      ) > 0
+                        ? `localhost:3000/${data.key}`
+                        : "만료됨"}
+                    </LinkUrl>
+                  </LinkTexts>
+                </LinkInfo>
+                <span />
+              </TableCell>
+              <TableCell>
+                <span>파일개수</span>
+                <span>{data.count.toLocaleString()}</span>
+              </TableCell>
+              <TableCell>
+                <span>파일사이즈</span>
+                <span>{roundToTwo(data.size)}</span>
+              </TableCell>
+              <TableCell>
+                <span>유효기간</span>
+                <span>
+                  {milliToTimeForm(
+                    latestCreatedAt,
+                    data.expires_at,
+                    props.baseDate,
+                    props.nowDate
+                  )}
+                </span>
+              </TableCell>
+              <TableCell>
+                <span>받은사람</span>
+                <LinkReceivers>
+                  {data.sent?.emails.map((email) => (
+                    <Avatar key={data.created_at} text={email} />
+                  ))}
+                </LinkReceivers>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </>
