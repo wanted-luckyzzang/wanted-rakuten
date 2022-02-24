@@ -1,3 +1,9 @@
-import { ApiDataType, DataType, FilesType, FileDataType } from "./apiDataType";
+import {
+  ApiDataType,
+  DataType,
+  FilesType,
+  FileDataType,
+  SentType,
+} from "./apiDataType";
 
-export type { ApiDataType, DataType, FilesType, FileDataType };
+export type { ApiDataType, DataType, FilesType, FileDataType, SentType };
