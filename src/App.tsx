@@ -1,19 +1,21 @@
-import React from "react";
 import Container from "components/Container";
 import DetailPage from "pages/DetailPage";
 import LinkPage from "pages/LinkPage";
-import { ThemeProvider } from "styled-components";
 import GlobalStyle from "styles/GlobalStyle";
+import { BrowserRouter } from "react-router-dom";
+import { Route, Routes } from "react-router";
 
 function App() {
   return (
-    <>
+    <BrowserRouter>
       <GlobalStyle />
       <Container>
-        {/* <LinkPage /> */}
-        <DetailPage />
+        <Routes>
+          <Route path="/" element={<LinkPage />}></Route>
+          <Route path="/:id" element={<DetailPage />}></Route>
+        </Routes>
       </Container>
-    </>
+    </BrowserRouter>
   );
 }
 
