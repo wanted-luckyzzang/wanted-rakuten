@@ -11,6 +11,7 @@ import { ApiDataType } from "types";
 
 function App() {
   const [data, setData] = useState<ApiDataType>();
+  const [nowDate, setNowDate] = useState<number>(0);
 
   useEffect(() => {
     if (inSession("data")) setData(getSession("data"));
@@ -21,15 +22,18 @@ function App() {
         setSession("data", data);
       })();
     }
+    setNowDate(new Date().getTime());
   }, []);
 
-  console.log(data);
   return (
     <BrowserRouter>
       <GlobalStyle />
       <Container>
         <Routes>
-          <Route path="/" element={<LinkPage />}></Route>
+          <Route
+            path="/"
+            element={<LinkPage data={data} nowDate={nowDate} />}
+          ></Route>
           <Route path="/:id" element={<DetailPage />}></Route>
         </Routes>
       </Container>

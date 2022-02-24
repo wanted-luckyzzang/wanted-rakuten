@@ -1,5 +1,6 @@
 import { inSession, setSession, getSession } from "./sessionStorage";
 import { getLastetCreatedAt, getKeyFilterData } from "./apiData";
+import { roundToTwo } from "./formatData";
 
 export {
   inSession,
@@ -7,4 +8,5 @@ export {
   getSession,
   getLastetCreatedAt,
   getKeyFilterData,
+  roundToTwo,
 };
