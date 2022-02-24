@@ -8,41 +8,53 @@ import GlobalStyle from "styles/GlobalStyle";
 import axios from "axios";
 import { getSession, inSession, setSession } from "utils";
 import { ApiDataType } from "types";
-import NotFound from 'pages/NotFound';
+import NotFound from "pages/NotFound";
 
 function App() {
   const [data, setData] = useState<ApiDataType>();
   const [baseDate, setBaseDate] = useState<number>(0);
+  const [nowDate, setNowDate] = useState<number>(0);
 
   useEffect(() => {
     if (inSession("data")) {
       setData(getSession("data") as ApiDataType);
       setBaseDate(getSession("baseDate") as number);
     } else {
+      const date = new Date().getTime();
+      setSession("baseDate", date);
+      setBaseDate(date);
       (async () => {
         const { data } = await axios.get("homeworks/links");
-        const baseDate = new Date().getTime();
         setSession("data", data);
         setData(data);
-        setSession("baseDate", baseDate);
-        setBaseDate(baseDate);
       })();
     }
+    setNowDate(new Date().getTime());
+    const timer = setInterval(() => setNowDate(new Date().getTime()), 1000);
+    return () => clearInterval(timer);
   }, []);
 
   return (
-    <BrowserRouter>
-      <GlobalStyle />
-      <Container>
-        <Routes>
-          <Route
-            path="/"
-            element={<LinkPage data={data} baseDate={baseDate} />}
-          ></Route>
-          <Route path="/:key" element={<DetailPage data={data} />}></Route>
-        </Routes>
-      </Container>
-    </BrowserRouter>
+    <>
+      {data ? (
+        <BrowserRouter>
+          <GlobalStyle />
+          <Container>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <LinkPage data={data} baseDate={baseDate} nowDate={nowDate} />
+                }
+              ></Route>
+              <Route path="/:key" element={<DetailPage data={data} />}></Route>
+            </Routes>
+          </Container>
+        </BrowserRouter>
+      ) : (
+        <NotFound />
+      )}
+    </>
   );
 }
 
