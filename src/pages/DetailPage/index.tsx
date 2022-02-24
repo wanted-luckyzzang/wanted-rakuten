@@ -1,10 +1,11 @@
 import React from "react";
+import { useParams } from "react-router";
+import { getKeyFilterData, roundToTwo } from "utils";
+import { ApiDataType } from "types";
 import styled from "styled-components";
 import colors from "styles/colors";
 import Button from "components/Button";
-import { ApiDataType } from "types";
-import { useParams } from "react-router";
-import { getKeyFilterData, roundToTwo } from "utils";
+import NotFound from 'pages/NotFound';
 interface DetailPageParams {
   data: ApiDataType | undefined;
 }
@@ -13,10 +14,10 @@ const DetailPage = (props: DetailPageParams): JSX.Element => {
   const { data } = props;
   let { key } = useParams();
   const getFilterData = getKeyFilterData(data, key);
-  
+
   return (
     <>
-      {getFilterData && (
+    {key && getFilterData ? (
         <>
           <Header>
             <LinkInfo>
@@ -63,6 +64,8 @@ const DetailPage = (props: DetailPageParams): JSX.Element => {
             </FileList>
           </Article>
         </>
+      ) : (
+        <NotFound/>
       )}
     </>
   );

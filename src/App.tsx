@@ -8,6 +8,7 @@ import GlobalStyle from "styles/GlobalStyle";
 import axios from "axios";
 import { getSession, inSession, setSession } from "utils";
 import { ApiDataType } from "types";
+import NotFound from 'pages/NotFound';
 
 function App() {
   const [data, setData] = useState<ApiDataType>();
