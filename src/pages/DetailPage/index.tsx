@@ -1,35 +1,50 @@
 import React from "react";
 import { useParams } from "react-router";
 import { ApiDataType } from "types";
-import { getKeyFilterData, roundToTwo } from "utils";
-import { DateFormat } from 'utils/formatData';
-import { NotPage } from 'pages/ErrorPage';
+import {
+  getKeyFilterData,
+  getLatestCreatedAt,
+  getRestMilliSeconds,
+  roundToTwo,
+} from "utils";
+import { DateFormat } from "utils/formatData";
+import { NotPage } from "pages/ErrorPage";
 import styled from "styled-components";
 import colors from "styles/colors";
 import Button from "components/Button";
 
 interface DetailPageParams {
   data: ApiDataType | undefined;
+  baseDate: number;
+  nowDate: number;
 }
-
 
 const DetailPage = (props: DetailPageParams): JSX.Element => {
   const { data } = props;
   let { key } = useParams();
+  const latestCreatedAt = getLatestCreatedAt(data);
   const getFilterData = getKeyFilterData(data, key);
-  const getCreateDate = DateFormat(Number(getFilterData?.created_at))
-  
+  const getCreateDate = DateFormat(Number(getFilterData?.created_at));
 
   return (
     <>
-    {getFilterData ? (
+      {getFilterData ? (
         <>
           <Header>
             <LinkInfo>
-              <Title>{getFilterData?.sent?.subject||"무제"}</Title>
+              <Title>{getFilterData?.sent?.subject || "무제"}</Title>
               <Url>localhost/{key}</Url>
             </LinkInfo>
-            <DownloadButton onClick={(()=>alert("다운로드 되었습니다."))}>
+            <DownloadButton
+              onClick={() =>
+                getRestMilliSeconds(
+                  latestCreatedAt,
+                  getFilterData.expires_at,
+                  props.baseDate,
+                  props.nowDate
+                ) > 0 && alert("다운로드 되었습니다.")
+              }
+            >
               <img
                 referrerPolicy="no-referrer"
                 src="/svgs/download.svg"
@@ -44,12 +59,12 @@ const DetailPage = (props: DetailPageParams): JSX.Element => {
                 <Top>링크 생성일</Top>
                 <Bottom>{getCreateDate}</Bottom>
                 <Top>메세지</Top>
-                <Bottom>{getFilterData?.sent?.content||"내용 없음"}</Bottom>
+                <Bottom>{getFilterData?.sent?.content || "내용 없음"}</Bottom>
                 <Top>다운로드 횟수</Top>
                 <Bottom>{getFilterData.download_count}</Bottom>
               </Texts>
               <LinkImage>
-                <Image thumbnailUrl={getFilterData.thumbnailUrl}  />
+                <Image thumbnailUrl={getFilterData.thumbnailUrl} />
               </LinkImage>
             </Descrition>
             <ListSummary>
@@ -57,20 +72,26 @@ const DetailPage = (props: DetailPageParams): JSX.Element => {
               <div>{roundToTwo(getFilterData.size)}</div>
             </ListSummary>
             <FileList>
-              {getFilterData.files.map((file)=> (
-                <FileListItem key={file.key}>
-                <FileItemInfo thumbnailUrl ={file.thumbnailUrl }>
-                  <span />
-                  <span>{file.name}</span>
-                </FileItemInfo>
-                <FileItemSize>{roundToTwo(file.size)}</FileItemSize>
-              </FileListItem>
-              ))}
+              {getRestMilliSeconds(
+                latestCreatedAt,
+                getFilterData.expires_at,
+                props.baseDate,
+                props.nowDate
+              ) > 0 &&
+                getFilterData.files.map((file) => (
+                  <FileListItem key={file.key}>
+                    <FileItemInfo thumbnailUrl={file.thumbnailUrl}>
+                      <span />
+                      <span>{file.name}</span>
+                    </FileItemInfo>
+                    <FileItemSize>{roundToTwo(file.size)}</FileItemSize>
+                  </FileListItem>
+                ))}
             </FileList>
           </Article>
         </>
       ) : (
-        <NotPage data={getFilterData}/>
+        <NotPage data={getFilterData} />
       )}
     </>
   );
@@ -185,8 +206,14 @@ const Image = styled.span<{ thumbnailUrl: string }>`
   width: 120px;
   display: inline-block;
   background-image: ${({ thumbnailUrl }) => {
-    const imageType = thumbnailUrl.substring(thumbnailUrl.length-4, thumbnailUrl.length);
-    return imageType === '.png' || imageType === '.jpg' ? `url(${thumbnailUrl})` : `url(/svgs/default.svg)`}};
+    const imageType = thumbnailUrl.substring(
+      thumbnailUrl.length - 4,
+      thumbnailUrl.length
+    );
+    return imageType === ".png" || imageType === ".jpg"
+      ? `url(${thumbnailUrl})`
+      : `url(/svgs/default.svg)`;
+  }};
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
@@ -243,8 +270,14 @@ const FileItemInfo = styled.div<{ thumbnailUrl: string }>`
     margin-right: 12px;
     display: inline-block;
     background-image: ${({ thumbnailUrl }) => {
-      const imageType = thumbnailUrl.substring(thumbnailUrl.length-4, thumbnailUrl.length);
-      return imageType === '.png' || imageType === '.jpg' ? `url(${thumbnailUrl})` : `url(/svgs/default.svg)`}};
+      const imageType = thumbnailUrl.substring(
+        thumbnailUrl.length - 4,
+        thumbnailUrl.length
+      );
+      return imageType === ".png" || imageType === ".jpg"
+        ? `url(${thumbnailUrl})`
+        : `url(/svgs/default.svg)`;
+    }};
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
