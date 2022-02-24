@@ -1,50 +1,69 @@
 import React from "react";
-import type { FC } from "react";
 import styled from "styled-components";
 import colors from "styles/colors";
 import Button from "components/Button";
+import { ApiDataType } from "types";
+import { useParams } from "react-router";
+import { getKeyFilterData, roundToTwo } from "utils";
+interface DetailPageParams {
+  data: ApiDataType | undefined;
+}
 
-const DetailPage: FC = () => {
+const DetailPage = (props: DetailPageParams): JSX.Element => {
+  const { data } = props;
+  let { key } = useParams();
+  const getFilterData = getKeyFilterData(data, key);
+  
   return (
     <>
-      <Header>
-        <LinkInfo>
-          <Title>로고파일</Title>
-          <Url>localhost/7LF4MDLY</Url>
-        </LinkInfo>
-        <DownloadButton>
-          <img referrerPolicy="no-referrer" src="/svgs/download.svg" alt="" />
-          받기
-        </DownloadButton>
-      </Header>
-      <Article>
-        <Descrition>
-          <Texts>
-            <Top>링크 생성일</Top>
-            <Bottom>2022년 1월 12일 22:36 +09:00</Bottom>
-            <Top>메세지</Top>
-            <Bottom>로고파일 전달 드립니다.</Bottom>
-            <Top>다운로드 횟수</Top>
-            <Bottom>1</Bottom>
-          </Texts>
-          <LinkImage>
-            <Image />
-          </LinkImage>
-        </Descrition>
-        <ListSummary>
-          <div>총 1개의 파일</div>
-          <div>10.86KB</div>
-        </ListSummary>
-        <FileList>
-          <FileListItem>
-            <FileItemInfo>
-              <span />
-              <span>logo.png</span>
-            </FileItemInfo>
-            <FileItemSize>10.86KB</FileItemSize>
-          </FileListItem>
-        </FileList>
-      </Article>
+      {getFilterData && (
+        <>
+          <Header>
+            <LinkInfo>
+              <Title>{getFilterData?.sent?.subject||"무제"}</Title>
+              <Url>localhost/{key}</Url>
+            </LinkInfo>
+            <DownloadButton onClick={(()=>alert("다운로드 되었습니다."))}>
+              <img
+                referrerPolicy="no-referrer"
+                src="/svgs/download.svg"
+                alt=""
+              />
+              받기
+            </DownloadButton>
+          </Header>
+          <Article>
+            <Descrition>
+              <Texts>
+                <Top>링크 생성일</Top>
+                <Bottom>{getFilterData.created_at}</Bottom>
+                <Top>메세지</Top>
+                <Bottom>{getFilterData?.sent?.content||"메세지 없음"}</Bottom>
+                <Top>다운로드 횟수</Top>
+                <Bottom>{getFilterData.download_count}</Bottom>
+              </Texts>
+              <LinkImage>
+                <Image />
+              </LinkImage>
+            </Descrition>
+            <ListSummary>
+              <div>총 {getFilterData.count}개의 파일</div>
+              <div>{roundToTwo(getFilterData.size)}</div>
+            </ListSummary>
+            <FileList>
+              {getFilterData.files.map((file)=> (
+                <FileListItem key={file.key}>
+                <FileItemInfo>
+                  <span />
+                  <span>{file.name}</span>
+                </FileItemInfo>
+                <FileItemSize>{roundToTwo(file.size)}</FileItemSize>
+              </FileListItem>
+              ))}
+            </FileList>
+          </Article>
+        </>
+      )}
     </>
   );
 };
