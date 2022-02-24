@@ -10,7 +10,25 @@ export const roundToTwo = (num: number) => {
   return `${((Math.round(m) / 100) * Math.sign(num)).toFixed(2)}BYTE`;
 };
 
-export const milliToTimeForm = (milliSeconds: number) => {
+export const getRestMilliSeconds = (
+  createdAt: number,
+  expiresAt: number,
+  baseDate: number,
+  nowDate: number
+): number => (expiresAt - createdAt) * 1000 - (nowDate - baseDate);
+
+export const milliToTimeForm = (
+  createdAt: number,
+  expiresAt: number,
+  baseDate: number,
+  nowDate: number
+) => {
+  const milliSeconds = getRestMilliSeconds(
+    createdAt,
+    expiresAt,
+    baseDate,
+    nowDate
+  );
   if (milliSeconds <= 0) return "만료됨";
 
   const oneToTwo = (num: number) => (num >= 10 ? `${num}` : `0${num}`);
