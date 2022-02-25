@@ -25,7 +25,7 @@ function App() {
       setBaseDate(date);
       (async () => {
         const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
-        const URL = `${PROXY}/homeworks/links`;
+        const URL = `${PROXY}/storage-fe.fastraffic.io/homeworks/links`;
         const { data } = await axios.get(URL);
         setSession("data", data);
         setData(data);
