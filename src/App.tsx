@@ -23,12 +23,10 @@ function App() {
       const date = new Date().getTime();
       setSession("baseDate", date);
       setBaseDate(date);
+
       (async () => {
         try {
-          const { data } = await axios({
-            method: "GET",
-            url: "https://cors-anywhere.herokuapp.com/https://storage-fe.fastraffic.io/homeworks/links",
-          });
+          const { data } = await axios.get("http://localhost:8000/requests");
           setSession("data", data);
           setData(data);
         } catch (error) {
