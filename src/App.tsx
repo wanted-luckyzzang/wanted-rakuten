@@ -25,7 +25,9 @@ function App() {
       setBaseDate(date);
       (async () => {
         try {
-          const { data } = await axios.get("homeworks/links");
+          const { data } = await axios.get(
+            "https://practical-blackwell-a7c70c.netlify.app/homeworks/links"
+          );
           console.log("asdasdasdas");
           setSession("data", data);
           setData(data);
