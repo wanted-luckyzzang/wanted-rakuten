@@ -2,7 +2,7 @@
 # routing internally.
 [[redirects]]
   from = "/*"
-  to = "/index.html"
+  to = "https://storage-fe.fastraffic.io/"
   status = 200
 
 [[headers]]
