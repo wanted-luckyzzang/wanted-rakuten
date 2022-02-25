@@ -23,27 +23,18 @@ function App() {
       const date = new Date().getTime();
       setSession("baseDate", date);
       setBaseDate(date);
-      (() =>
-        fetch("https://storage-fe.fastraffic.io/homeworks/links", {
-          headers: { accept: "Accept: application/json" },
-        })
-          .then((x) => x.json())
-          .then(({ data }) => {
-            setData(data);
-            setSession("data", data);
-          }))();
-
-      // (async () => {
-      //   try {
-      //     const { data } = await axios.get(
-      //       "https://storage-fe.fastraffic.io/homeworks/links"
-      //     );
-      //     setSession("data", data);
-      //     setData(data);
-      //   } catch (error) {
-      //     console.log(error);
-      //   }
-      // })();
+      (async () => {
+        try {
+          const { data } = await axios({
+            method: "GET",
+            url: "https://cors-anywhere.herokuapp.com/https://storage-fe.fastraffic.io/homeworks/links",
+          });
+          setSession("data", data);
+          setData(data);
+        } catch (error) {
+          console.log(error);
+        }
+      })();
     }
     setNowDate(new Date().getTime());
     const timer = setInterval(() => setNowDate(new Date().getTime()), 1000);
