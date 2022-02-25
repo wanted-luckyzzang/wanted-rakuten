@@ -25,7 +25,9 @@ function App() {
       setBaseDate(date);
       (async () => {
         try {
-          const { data } = await axios.get("/homeworks/links");
+          const { data } = await axios.get(
+            "https:/storage-fe.fastraffic.io//homeworks/links"
+          );
           setSession("data", data);
           setData(data);
         } catch (error) {
@@ -40,33 +42,25 @@ function App() {
 
   return (
     <>
-      {data ? (
-        <BrowserRouter>
-          <GlobalStyle />
-          <Container>
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <LinkPage data={data} baseDate={baseDate} nowDate={nowDate} />
-                }
-              ></Route>
-              <Route
-                path="/:key"
-                element={
-                  <DetailPage
-                    data={data}
-                    baseDate={baseDate}
-                    nowDate={nowDate}
-                  />
-                }
-              ></Route>
-            </Routes>
-          </Container>
-        </BrowserRouter>
-      ) : (
-        <NotData />
-      )}
+      <BrowserRouter>
+        <GlobalStyle />
+        <Container>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <LinkPage data={data} baseDate={baseDate} nowDate={nowDate} />
+              }
+            ></Route>
+            <Route
+              path="/:key"
+              element={
+                <DetailPage data={data} baseDate={baseDate} nowDate={nowDate} />
+              }
+            ></Route>
+          </Routes>
+        </Container>
+      </BrowserRouter>
     </>
   );
 }
