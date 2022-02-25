@@ -40,7 +40,16 @@ const LinkPage = (props: LinkPageParams): JSX.Element => {
             <TableRow key={data.created_at}>
               <TableCell>
                 <LinkInfo>
-                  <LinkImage>
+                  <LinkImage
+                    onClick={() => {
+                      getRestMilliSeconds(
+                        latestCreatedAt,
+                        data.expires_at,
+                        props.baseDate,
+                        props.nowDate
+                      ) > 0 && navigate(data.key);
+                    }}
+                  >
                     <img
                       referrerPolicy="no-referrer"
                       src="/svgs/default.svg"
@@ -69,7 +78,7 @@ const LinkPage = (props: LinkPageParams): JSX.Element => {
                             props.baseDate,
                             props.nowDate
                           ) > 0
-                            ? `localhost:3000/${data.key}`
+                            ? `https://wanted-rakuten.netlify.app/${data.key}`
                             : null
                         );
                       }}
@@ -80,7 +89,7 @@ const LinkPage = (props: LinkPageParams): JSX.Element => {
                         props.baseDate,
                         props.nowDate
                       ) > 0
-                        ? `localhost:3000/${data.key}`
+                        ? `https://wanted-rakuten.netlify.app/${data.key}`
                         : "만료됨"}
                     </LinkUrl>
                   </LinkTexts>

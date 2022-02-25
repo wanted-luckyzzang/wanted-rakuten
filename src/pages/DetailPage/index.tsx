@@ -33,7 +33,7 @@ const DetailPage = (props: DetailPageParams): JSX.Element => {
           <Header>
             <LinkInfo>
               <Title>{getFilterData?.sent?.subject || "무제"}</Title>
-              <Url>localhost/{key}</Url>
+              <Url>https://wanted-rakuten.netlify.app/{key}</Url>
             </LinkInfo>
             <DownloadButton
               onClick={() =>
