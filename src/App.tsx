@@ -24,11 +24,15 @@ function App() {
       setSession("baseDate", date);
       setBaseDate(date);
       (async () => {
-        const { data } = await axios.get(
-          "https://storage-fe.fastraffic.io/homeworks/links"
-        );
-        setSession("data", data);
-        setData(data);
+        try {
+          const { data } = await axios.get(
+            "https://storage-fe.fastraffic.io/homeworks/links"
+          );
+          setSession("data", data);
+          setData(data);
+        } catch (error) {
+          console.log(error);
+        }
       })();
     }
     setNowDate(new Date().getTime());
