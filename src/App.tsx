@@ -24,9 +24,9 @@ function App() {
       setSession("baseDate", date);
       setBaseDate(date);
       (async () => {
-        const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
-        const URL = `${PROXY}/storage-fe.fastraffic.io/homeworks/links`;
-        const { data } = await axios.get(URL);
+        const { data } = await axios.get(
+          "https://storage-fe.fastraffic.io/homeworks/links"
+        );
         setSession("data", data);
         setData(data);
       })();
