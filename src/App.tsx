@@ -25,7 +25,10 @@ function App() {
       setBaseDate(date);
       (async () => {
         try {
-          const { data } = await axios.get("/homeworks/links");
+          const { data } = await axios.get(
+            "https://storage-fe.fastraffic.io/homeworks/links"
+          );
+          console.log("dadad", data);
           setSession("data", data);
           setData(data);
         } catch (error) {
