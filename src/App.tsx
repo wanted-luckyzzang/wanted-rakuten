@@ -26,7 +26,9 @@ function App() {
 
       (async () => {
         try {
-          const { data } = await axios.get("http://localhost:8000/requests");
+          const { data } = await axios.get(
+            "https://wanted-rakuten-mission.herokuapp.com/requests"
+          );
           setSession("data", data);
           setData(data);
         } catch (error) {
