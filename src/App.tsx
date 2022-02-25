@@ -9,6 +9,7 @@ import Container from "components/Container";
 import DetailPage from "pages/DetailPage";
 import LinkPage from "pages/LinkPage";
 import GlobalStyle from "styles/GlobalStyle";
+import API_DATA from "./apiData";
 
 function App() {
   const [data, setData] = useState<ApiDataType>();
@@ -23,18 +24,8 @@ function App() {
       const date = new Date().getTime();
       setSession("baseDate", date);
       setBaseDate(date);
-      (async () => {
-        try {
-          const { data } = await axios({
-            method: "GET",
-            url: "https://cors-anywhere.herokuapp.com/https://storage-fe.fastraffic.io/homeworks/links",
-          });
-          setSession("data", data);
-          setData(data);
-        } catch (error) {
-          console.log(error);
-        }
-      })();
+      setSession("data", API_DATA);
+      setData(API_DATA);
     }
     setNowDate(new Date().getTime());
     const timer = setInterval(() => setNowDate(new Date().getTime()), 1000);
