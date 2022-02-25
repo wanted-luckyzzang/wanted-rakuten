@@ -69,7 +69,7 @@ const LinkPage = (props: LinkPageParams): JSX.Element => {
                             props.baseDate,
                             props.nowDate
                           ) > 0
-                            ? `/${data.key}`
+                            ? `https://practical-blackwell-a7c70c.netlify.app/${data.key}`
                             : null
                         );
                       }}
@@ -80,7 +80,7 @@ const LinkPage = (props: LinkPageParams): JSX.Element => {
                         props.baseDate,
                         props.nowDate
                       ) > 0
-                        ? `/${data.key}`
+                        ? `https://practical-blackwell-a7c70c.netlify.app/${data.key}`
                         : "만료됨"}
                     </LinkUrl>
                   </LinkTexts>

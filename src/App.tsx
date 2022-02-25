@@ -26,9 +26,8 @@ function App() {
       (async () => {
         try {
           const { data } = await axios.get(
-            "https://storage-fe.fastraffic.io/homeworks/links"
+            `${window.location.origin}/homeworks/links`
           );
-          console.log("dadad", data);
           setSession("data", data);
           setData(data);
         } catch (error) {
