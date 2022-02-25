@@ -25,13 +25,9 @@ function App() {
       setBaseDate(date);
       (async () => {
         try {
-          const { data } = await axios.get(
-            "https://practical-blackwell-a7c70c.netlify.app/homeworks/links"
-          );
-          console.log("asdasdasdas");
+          const { data } = await axios.get("/homeworks/links");
           setSession("data", data);
           setData(data);
-          console.log("test", data);
         } catch (error) {
           console.log(error);
         }
@@ -44,25 +40,33 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
-        <GlobalStyle />
-        <Container>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <LinkPage data={data} baseDate={baseDate} nowDate={nowDate} />
-              }
-            ></Route>
-            <Route
-              path="/:key"
-              element={
-                <DetailPage data={data} baseDate={baseDate} nowDate={nowDate} />
-              }
-            ></Route>
-          </Routes>
-        </Container>
-      </BrowserRouter>
+      {data ? (
+        <BrowserRouter>
+          <GlobalStyle />
+          <Container>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <LinkPage data={data} baseDate={baseDate} nowDate={nowDate} />
+                }
+              ></Route>
+              <Route
+                path="/:key"
+                element={
+                  <DetailPage
+                    data={data}
+                    baseDate={baseDate}
+                    nowDate={nowDate}
+                  />
+                }
+              ></Route>
+            </Routes>
+          </Container>
+        </BrowserRouter>
+      ) : (
+        <NotData />
+      )}
     </>
   );
 }
