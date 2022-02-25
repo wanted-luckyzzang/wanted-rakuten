@@ -26,7 +26,7 @@ function App() {
       (async () => {
         try {
           const { data } = await axios.get(
-            "https:/storage-fe.fastraffic.io//homeworks/links"
+            "https:/storage-fe.fastraffic.io/homeworks/links"
           );
           setSession("data", data);
           setData(data);
