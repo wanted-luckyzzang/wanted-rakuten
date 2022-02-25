@@ -78,7 +78,7 @@ const LinkPage = (props: LinkPageParams): JSX.Element => {
                             props.baseDate,
                             props.nowDate
                           ) > 0
-                            ? `https://wanted-rakuten.netlify.app/${data.key}`
+                            ? `https://wanted-rakuten-mission.herokuapp.com/${data.key}`
                             : null
                         );
                       }}
@@ -89,7 +89,7 @@ const LinkPage = (props: LinkPageParams): JSX.Element => {
                         props.baseDate,
                         props.nowDate
                       ) > 0
-                        ? `https://wanted-rakuten.netlify.app/${data.key}`
+                        ? `https://wanted-rakuten-mission.herokuapp.com/${data.key}`
                         : "만료됨"}
                     </LinkUrl>
                   </LinkTexts>
