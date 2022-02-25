@@ -25,9 +25,7 @@ function App() {
       setBaseDate(date);
       (async () => {
         try {
-          const { data } = await axios.get(
-            "homeworks/links"
-          );
+          const { data } = await axios.get("/homeworks/links");
           setSession("data", data);
           setData(data);
         } catch (error) {
