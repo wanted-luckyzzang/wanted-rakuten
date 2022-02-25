@@ -69,7 +69,7 @@ const LinkPage = (props: LinkPageParams): JSX.Element => {
                             props.baseDate,
                             props.nowDate
                           ) > 0
-                            ? `localhost:3000/${data.key}`
+                            ? `/${data.key}`
                             : null
                         );
                       }}
@@ -80,7 +80,7 @@ const LinkPage = (props: LinkPageParams): JSX.Element => {
                         props.baseDate,
                         props.nowDate
                       ) > 0
-                        ? `localhost:3000/${data.key}`
+                        ? `/${data.key}`
                         : "만료됨"}
                     </LinkUrl>
                   </LinkTexts>
