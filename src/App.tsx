@@ -30,6 +30,7 @@ function App() {
           );
           setSession("data", data);
           setData(data);
+          console.log("test", data);
         } catch (error) {
           console.log(error);
         }
