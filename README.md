@@ -1,4 +1,4 @@
-# wantend-Rakuten
+# wanted-Rakuten
 
 ## 1. 프로젝트 소개
 
