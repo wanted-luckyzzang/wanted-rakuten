@@ -83,9 +83,7 @@ https://wanted-rakuten.netlify.app/
 
 - 문제 정의 : React Router를 사용하는 React 사이트를 netlify에 배포 후 다른 route로 넘어갈 때 Not Found Error 발생.
 - 문제 원인 : React Router는 client에서 라우팅을 처리하기 때문에 root가 아닌 페이지(ex: https://testsite/netlify.com/test)에 접속할 때, netlify(server)는 route를 처리하는 방법을 알 수 없어서 에러 발생.
-- 해결 방법 : netlify는 client 측에서 처리되지 않는 URL을 처리할 수 있도록 redirects 파일을 제공하므로, 디렉토리 내 netlify.toml 파일 안에 아래의 코드 추가하여 해결.
-
-```[[redirects]] from = "/*" to = "/index.html" status = 200```
+- 해결 방법 : netlify는 client 측에서 처리되지 않는 URL을 처리할 수 있도록 redirects 파일을 제공하므로, 디렉토리 내 netlify.toml 파일 안에 아래의 코드 추가하여 해결. ```[[redirects]] from = "/*" to = "/index.html" status = 200```
 
 
 </br></br>
