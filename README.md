@@ -86,8 +86,9 @@ https://wanted-rakuten.netlify.app/
 - 해결 방법 : netlify는 client 측에서 처리되지 않는 URL을 처리할 수 있도록 redirects 파일을 제공하므로, 디렉토리 내 netlify.toml 파일 안에
 
 ```
-`[[redirects]] from = "/*" to = "/index.html" status = 200` 코드 추가하여 해결.
+`[[redirects]] from = "/*" to = "/index.html" status = 200`
 ```
+코드 추가하여 해결.
 
 </br></br>
 
